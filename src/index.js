@@ -12,7 +12,7 @@ app.use(morgan(':method :url :status :response-time ms :user-agent :date[web]'))
 app.use(cors());
 
 app.use('/api', (req, res) => {
-    res.json({ msg: "Hello World! Life is beautiful" })
+    res.json({ msg: "Hello World! Life is beautiful." })
 })
 
 app.use('/mol', (req, res) => {
