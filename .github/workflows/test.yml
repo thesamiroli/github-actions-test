@@ -1,0 +1,123 @@
+name: GHA Actions
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+
+    paths:
+      - src/**
+      - test/**
+      - .github/**
+
+  pull_request:
+    branches:
+      - dev
+      - master
+
+    paths:
+      - src/**
+      - test/**
+      - .github/**
+
+jobs:
+  Build:
+    name: Build the app
+    runs-on: ubuntu-latest
+
+    if: ${{ !contains(github.event.head_commit.message, 'skip ci') }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Dump Github Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Install dependenciess
+        run: yarn
+
+      - name: list dir
+        run: ls
+
+      - name: just build it
+        run: yarn build
+
+      - name: set var
+        run: |
+          SAMIR=hero
+          echo $SAMIR
+
+      - name: output samir
+        run: echo $SAMIR
+
+  Test:
+    name: Test the app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: CHeck for exit
+        run: |
+          echo Hello world
+          exit 0
+          echo HI
+
+      - name: Dump Github Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Install dependencfies
+        run: yarn
+
+      - name: list dir
+        run: ls
+
+      - name: just test it
+        run: yarn test
+
+  slackNotif:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_WEBHOOK: https://hooks.slack.com/services/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
+          SLACK_CHANNEL: random
+          SLACK_COLOR: "#3278BD"
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: "Notification test"
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+
+  runScript:
+    name: Run Script
+    runs-on: ubuntu-latest
+
+    needs: [Build, Test]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Add execute permission
+        run: chmod +x script.sh
+
+      - name: Execute script
+        run: ./script.sh
+
+  testerJob:
+    name: Tester jobs
+    runs-on: ubuntu-latest
+
+    if: github.actor == 'thesamiroli' && github.event_name =='push' && !contains(github.event.head_commit.message, 'skip ci')
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: echo "Testing completed"
