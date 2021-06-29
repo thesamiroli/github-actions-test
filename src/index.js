@@ -27,7 +27,7 @@ app.get('/square/:num', (req, res) => {
 app.use((req, res, next) => {
     res.json({ msg: "You have entered the error handling middleware" })
 })
-
+console.log("hlaieka")
 const port = 8005;
 
 app.listen(port, () => console.log("Listening on " + port));
