@@ -15,10 +15,10 @@ echo $GITHUB_EVENT_NAME
 echo event path:
 echo $GITHUB_EVENT_PATH
 
-echo head ref it is only available on pr:
+echo head ref it is only available on PR:
 echo $GITHUB_HEAD_REF
 
-echo base ref it is only available on pr:
+echo base ref it is only available on PR:
 echo $GITHUB_BASE_REF
 
 echo ref:

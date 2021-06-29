@@ -59,6 +59,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: preactjs/compressed-size-action@v2
+
       - name: CHeck for exit
         run: |
           echo Hello world
@@ -78,23 +80,6 @@ jobs:
 
       - name: just test it
         run: yarn test
-
-  slackNotif:
-    name: Slack Notification
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v2
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@master
-        env:
-          SLACK_WEBHOOK: https://hooks.slack.com/services/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
-          SLACK_CHANNEL: random
-          SLACK_COLOR: "#3278BD"
-          SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: "Notification test"
-          SLACK_TITLE: Post Title
-          SLACK_USERNAME: rtCamp
 
   runScript:
     name: Run Script
